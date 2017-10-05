@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp" >
+
+    <TextView
+        android:id="@+id/textusername"
+        android:layout_width="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:layout_height="30dp"
+        android:textSize="28dp"
+        android:text="Username"
+        />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_below="@+id/textusername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="28dp"
+        />
+
+    <TextView
+        android:id="@+id/textpassword"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/username"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp"
+        android:textSize="28dp"
+        android:text="Password"
+        />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textpassword"
+        android:textSize="28dp"
+        android:inputType="textPassword"
+        />
+    <Button
+        android:id="@+id/Loginbutton"
+        android:layout_width="96dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/password"
+        android:onClick="onClickLogin"
+        android:text="Login" />
+
+</RelativeLayout>
