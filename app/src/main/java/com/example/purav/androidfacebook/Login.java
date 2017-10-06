@@ -1,5 +1,6 @@
 package com.example.purav.androidfacebook;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,15 +35,26 @@ public class Login extends AppCompatActivity {
     private void sendJSONArrayRequest(final String username, final String password) throws JSONException
     {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url ="http://192.168.0.110:8080/newmessenger/Login";
+        String url ="http://192.168.0.110:8080/androidmessenger/Login";
 
         StringRequest str = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.e("The response is ", response);
                         // Display the first 500 characters of the response string.
                         try{
                             JSONObject jobj = new JSONObject(response);
+                            Boolean successlogin = jobj.getBoolean("status");
+                            if(successlogin.equals(true)){
+                                String userid = jobj.getString("data");
+                                Toast.makeText(getApplicationContext(), "You have logged in user " + userid, Toast.LENGTH_LONG).show();
+                                Intent i = new Intent(getApplicationContext(),Home.class);
+                                startActivity(i);
+                            }
+                            else{
+                                Toast.makeText(getApplicationContext(), "Wrong Username/Password", Toast.LENGTH_LONG).show();
+                            }
                         }
                         catch (JSONException jsonex){
                             Log.e("Error in Json Parsing", "Shit");
@@ -60,7 +72,7 @@ public class Login extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("uid", username);
+                params.put("id", username);
                 params.put("password", password);
                 return params;
             }
@@ -77,7 +89,7 @@ public class Login extends AppCompatActivity {
 
     public void onClickLogin(View v)
     {
-        Toast.makeText(getApplicationContext(), "Clicked on Button", Toast.LENGTH_LONG).show();
+        // Toast.makeText(getApplicationContext(), "Clicked on Button", Toast.LENGTH_SHORT).show();
         EditText editusername = (EditText) findViewById(R.id.username) ;
         String username = editusername.getText().toString();
         EditText editpassword = (EditText) findViewById(R.id.password) ;
