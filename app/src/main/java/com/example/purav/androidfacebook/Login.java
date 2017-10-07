@@ -15,7 +15,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,13 +28,13 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login2);
+        setContentView(R.layout.activity_login);
     }
 
     private void sendJSONArrayRequest(final String username, final String password) throws JSONException
     {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url ="http://192.168.0.110:8080/androidmessenger/Login";
+        String url ="http://10.42.0.1:8080/SocialNetwork3/Login";
 
         StringRequest str = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -49,7 +48,7 @@ public class Login extends AppCompatActivity {
                             if(successlogin.equals(true)){
                                 String userid = jobj.getString("data");
                                 Toast.makeText(getApplicationContext(), "You have logged in user " + userid, Toast.LENGTH_LONG).show();
-                                Intent i = new Intent(getApplicationContext(),Home.class);
+                                Intent i = new Intent(getApplicationContext(),HomePage.class);
                                 startActivity(i);
                             }
                             else{
