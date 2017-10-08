@@ -25,6 +25,8 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
+    public static final String urlx = "http://10.42.0.147:8080/androidmessenger";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +36,7 @@ public class Login extends AppCompatActivity {
     private void sendJSONArrayRequest(final String username, final String password) throws JSONException
     {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url ="http://10.42.0.1:8080/SocialNetwork3/Login";
+        String url = urlx+ "/Login";
 
         StringRequest str = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
@@ -81,6 +83,8 @@ public class Login extends AppCompatActivity {
 
         CookieManager cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
+
+        Log.e("The cookie:", cookieManager.toString());
 
         queue.add(str);
 
