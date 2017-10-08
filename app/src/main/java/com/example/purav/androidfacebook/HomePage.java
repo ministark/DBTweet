@@ -18,7 +18,7 @@ import android.view.MenuItem;
 
 public class HomePage extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private  FragmentManager fm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +43,7 @@ public class HomePage extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        fm = getFragmentManager();
     }
 
     @Override
@@ -82,7 +83,6 @@ public class HomePage extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         if (id == R.id.nav_home) {
             ft.replace(R.id.home_container,  new HomeFragment());

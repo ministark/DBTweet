@@ -7,12 +7,17 @@
     <TextView
         android:id="@+id/fragment_home"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|center_vertical"
         android:layout_marginTop="20dip"
         android:text="Home"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30dip" />
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/listview_home"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>
