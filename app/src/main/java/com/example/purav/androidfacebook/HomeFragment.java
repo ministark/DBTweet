@@ -17,7 +17,22 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.example.purav.androidfacebook.Login.urlx;
 
 
 public class HomeFragment extends Fragment {
@@ -31,30 +46,66 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home , container, false);
-        // Temporary post
-        temp.add(new PostStructure("Me","First Post"));
-        temp.get(0).comments.add(new CommentStructure("By Me", "My comment"));
-        temp.get(0).comments.add(new CommentStructure("By Me", "The Hidden Comment"));
-        temp.add(new PostStructure("Also Me","Second Post"));
-        temp.get(1).comments.add(new CommentStructure("By Me again", "My comment again"));
-//        for (PostStructure s: temp) {
-//            Log.i("name", s.name);
-//            Log.i("content", s.content);
-//            for (CommentStructure c : s.comments) {
-//                Log.i("comment", c.content + c.name);
-//            }
-//        }
         // Creating the adapter
-        AdapterPost adapter = new AdapterPost(rootView, getActivity(),temp);
+        final AdapterPost adapter = new AdapterPost(rootView, getActivity(),temp);
         ListView listview_home = (ListView)rootView.findViewById(R.id.listview_home);
         listview_home.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                 temp.get(position).see_all_comments = !temp.get(position).see_all_comments;
+                Log.e("Focused","focus");
                 ((AdapterPost)parent.getAdapter()).notifyDataSetChanged();
             }
         });
         listview_home.setAdapter(adapter);
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        String url = urlx + "/SeePosts";
+        Log.i("urll", url);
+        StringRequest str = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("The response is ", response);
+                        try{
+                            JSONObject jobj = new JSONObject(response);
+                            Boolean successlogin = jobj.getBoolean("status");
+                            if(successlogin.equals(true)){
+                                JSONArray post_list = jobj.getJSONArray("data");
+                                for (int i = 0; i < post_list.length(); i++) {
+                                    JSONObject post = post_list.getJSONObject(i);
+                                    temp.add(new PostStructure(post.getString("uid"),post.getString("text")) );
+                                    temp.get(temp.size()-1).postid = post.getString("postid");
+                                    JSONArray comment_list = post.getJSONArray("Comment");
+                                    for (int j = 0; j < comment_list.length(); j++){
+                                        JSONObject comm = comment_list.getJSONObject(j);
+                                        temp.get(temp.size()-1).comments.add(new CommentStructure(comm.getString("name"), comm.getString("text")) );
+                                    }
+
+                                }
+                                adapter.notifyDataSetChanged();
+                                Log.e("AutoComplete", "Added new suggestions..! yaaay");
+                            }
+                            else{
+                                Toast.makeText(getActivity(), "Couldn't Do It :(", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        catch (JSONException jsonex){
+                            Log.e("Error in Json Parsing", "Shit");
+                        }
+                        Log.e("done with response", "yaaay");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error In HTTP Response", "Shit");
+                    }
+                }
+        );
+        queue.add(str);
+
         return rootView;
     }
 }

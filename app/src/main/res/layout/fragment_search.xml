@@ -7,11 +7,52 @@
     <TextView
         android:id="@+id/fragment_search"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|center_vertical"
         android:layout_marginTop="20dip"
         android:text="Search"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textSize="30dip" />
+
+    <AutoCompleteTextView
+        android:id="@+id/user_input_autocomplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Search person.."
+        />
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/user_finalized"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/follow_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Follow"
+            android:onClick="followperson"
+            />
+
+        <Button
+            android:id="@+id/showposts_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Show Posts"
+            android:onClick="showposts"
+            />
+
+        <Button
+            android:id="@+id/cancel_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Cancel"
+            />
+    </LinearLayout>
 
 </LinearLayout>

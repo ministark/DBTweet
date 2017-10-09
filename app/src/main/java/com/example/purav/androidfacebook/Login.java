@@ -25,6 +25,8 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
+    public static final String urlx = "http://10.42.0.1:8080/SocialNetwork3";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +36,8 @@ public class Login extends AppCompatActivity {
     private void sendJSONArrayRequest(final String username, final String password) throws JSONException
     {
         RequestQueue queue = Volley.newRequestQueue(getApplicationContext());
-        String url ="http://10.42.0.1:8080/SocialNetwork3/Login";
+        String url = urlx+ "/Login";
+
 
         StringRequest str = new StringRequest(Request.Method.POST,  url,
                 new Response.Listener<String>() {
@@ -65,8 +68,6 @@ public class Login extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Error In HTTP Response", "Shit");
-                Intent i = new Intent(getApplicationContext(),HomePage.class);
-                startActivity(i);
             }
         }
         ) {
@@ -83,6 +84,8 @@ public class Login extends AppCompatActivity {
 
         CookieManager cookieManager = new CookieManager();
         CookieHandler.setDefault(cookieManager);
+
+        Log.e("The cookie:", cookieManager.toString());
 
         queue.add(str);
 

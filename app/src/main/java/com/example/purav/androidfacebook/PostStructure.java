@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 public class PostStructure {
     public String content;
+    public String postid;
     public String name;
     public boolean see_all_comments;
     public ArrayList<CommentStructure> comments;

@@ -6,6 +6,7 @@ package com.example.purav.androidfacebook;
  */
 
 public class CommentStructure {
+    public static int min_comments = 1;
     public String name;
     public String content;
     public CommentStructure (String name, String content){
