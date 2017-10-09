@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class Login extends AppCompatActivity {
 
-    public static final String urlx = "http://10.42.0.147:8080/androidmessenger";
+    public static final String urlx = "http://192.168.0.110:8080/androidmessenger";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
