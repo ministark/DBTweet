@@ -4,9 +4,14 @@ package com.example.purav.androidfacebook;
  * Created by sourabh on 7/10/17.
  */
 
+import com.example.purav.androidfacebook.HomePage;
+
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -215,6 +220,10 @@ public class SearchFragment extends Fragment {
         textView.setSelected(false);
         LinearLayout mybuttons = (LinearLayout) view.findViewById(R.id.user_finalized);
         mybuttons.setVisibility(View.GONE);
+        FragmentManager fm = getActivity().getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.home_container,  new HomeFragment());
+        ft.commit();
     }
 
     public void followuid(String uidx){
