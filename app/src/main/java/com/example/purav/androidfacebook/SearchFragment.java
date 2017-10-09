@@ -8,6 +8,7 @@ import com.example.purav.androidfacebook.HomePage;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import android.view.LayoutInflater;
 import android.app.Fragment;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -114,6 +116,8 @@ public class SearchFragment extends Fragment {
         cancelbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 cancelsearch(view);
             }
         });
@@ -124,6 +128,8 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v){
                 String text_in_box = textView.getText().toString();
+                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 followuid(text_in_box);
             }
         });
@@ -135,7 +141,10 @@ public class SearchFragment extends Fragment {
             @Override
             public void onClick(View v){
                 String text_in_box = textView.getText().toString();
+                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
                 showposts(text_in_box,view);
+
             }
         });
         return view;
@@ -230,6 +239,8 @@ public class SearchFragment extends Fragment {
         textView.setText("");
         textView.setSelected(false);
         LinearLayout mybuttons = (LinearLayout) view.findViewById(R.id.user_finalized);
+//        ListView  lv = (ListView) view.findViewById(R.id.listview_user);
+//        lv.setVisibility(View.GONE);
         mybuttons.setVisibility(View.GONE);
         FragmentManager fm = getActivity().getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
@@ -285,7 +296,7 @@ public class SearchFragment extends Fragment {
 
     }
 
-    public void showposts(String uid1, View view){
+    public void showposts(String uid1, final View view){
         // Creating the adapter
         final String uid = uid1.split(",")[0];
         final ArrayList<PostStructure> temp = new ArrayList<>();
@@ -318,6 +329,8 @@ public class SearchFragment extends Fragment {
 
                                 }
                                 adapter.notifyDataSetChanged();
+//                                ListView  lv = (ListView) view.findViewById(R.id.listview_user);
+//                                lv.setVisibility(View.VISIBLE);
                                 Log.e("AutoComplete", "Added new suggestions..! yaaay");
                             }
                             else{
