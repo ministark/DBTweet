@@ -21,6 +21,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -122,6 +123,16 @@ public class SearchFragment extends Fragment {
             }
         });
 
+
+        // COde for see user
+        final Button showpostsbutton = (Button) view.findViewById(R.id.showposts_button);
+        showpostsbutton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                String text_in_box = textView.getText().toString();
+                showposts(text_in_box,view);
+            }
+        });
         return view;
     }
 
@@ -265,6 +276,68 @@ public class SearchFragment extends Fragment {
 
     }
 
+    public void showposts(String uid1, View view){
+        // Creating the adapter
+        final String uid = uid1.split(",")[0];
+        final ArrayList<PostStructure> temp = new ArrayList<>();
+        final AdapterPost adapter = new AdapterPost(view, getActivity(),temp);
+        ListView listview_home = (ListView)view.findViewById(R.id.listview_user);
+        listview_home.setAdapter(adapter);
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity().getApplicationContext());
+        String url = urlx + "/SeeUserPosts";
+        Log.i("urll", url);
+        StringRequest str = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("The response is ", response);
+                        try{
+                            JSONObject jobj = new JSONObject(response);
+                            Boolean successlogin = jobj.getBoolean("status");
+                            if(successlogin.equals(true)){
+                                JSONArray post_list = jobj.getJSONArray("data");
+                                for (int i = 0; i < post_list.length(); i++) {
+                                    JSONObject post = post_list.getJSONObject(i);
+                                    temp.add(new PostStructure(post.getString("uid"),post.getString("text")) );
+                                    temp.get(temp.size()-1).postid = post.getString("postid");
+                                    JSONArray comment_list = post.getJSONArray("Comment");
+                                    for (int j = 0; j < comment_list.length(); j++){
+                                        JSONObject comm = comment_list.getJSONObject(j);
+                                        temp.get(temp.size()-1).comments.add(new CommentStructure(comm.getString("name"), comm.getString("text")) );
+                                    }
+
+                                }
+                                adapter.notifyDataSetChanged();
+                                Log.e("AutoComplete", "Added new suggestions..! yaaay");
+                            }
+                            else{
+                                Toast.makeText(getActivity(), "Couldn't Do It :(", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                        catch (JSONException jsonex){
+                            Log.e("Error in Json Parsing", "Shit");
+                        }
+                        Log.e("done with response", "yaaay");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error In HTTP Response", "Shit");
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("uid", uid);
+                Log.e("params", uid);
+                return params;
+            }
+        };
+        queue.add(str);
+    }
 }
 
 
