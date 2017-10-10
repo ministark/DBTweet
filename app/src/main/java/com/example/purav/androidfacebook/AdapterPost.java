@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -63,6 +64,11 @@ public class AdapterPost extends ArrayAdapter<PostStructure> {
         textView1.setText(posts.get(position).name);
         TextView textView2 = (TextView) view.findViewById(R.id.post_content);
         textView2.setText(posts.get(position).content);
+        final ImageView image = (ImageView) view.findViewById(R.id.post_image);
+        if(posts.get(position).bitmap !=null)
+            image.setImageBitmap(posts.get(position).bitmap);
+        else
+            image.setVisibility(View.GONE);
 
         TableLayout table = (TableLayout)view.findViewById(R.id.comment_table);
         int c_size = posts.get(position).see_all_comments ? posts.get(position).comments.size():min(min_comments,posts.get(position).comments.size());

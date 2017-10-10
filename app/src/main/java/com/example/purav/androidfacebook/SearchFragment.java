@@ -338,7 +338,7 @@ public class SearchFragment extends Fragment {
                             }
                         }
                         catch (JSONException jsonex){
-                            Log.e("Error in Json Parsing", "Shit");
+                            Log.e("Error in Json Parsing", "show post in search");
                         }
                         Log.e("done with response", "yaaay");
                     }

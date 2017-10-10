@@ -5,7 +5,10 @@ package com.example.purav.androidfacebook;
  */
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.app.Fragment;
@@ -77,6 +80,14 @@ public class HomeFragment extends Fragment {
                                     JSONObject post = post_list.getJSONObject(i);
                                     temp.add(new PostStructure(post.getString("uid"),post.getString("text")) );
                                     temp.get(temp.size()-1).postid = post.getString("postid");
+                                    boolean has_img = post.has("image");
+                                    Log.d("Bool image", String.valueOf(has_img));
+                                    if (has_img) {
+                                        String encodedImage = post.getString("image");
+                                        byte[] decodedString = Base64.decode(encodedImage, Base64.DEFAULT);
+                                        Bitmap image = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                                        temp.get(temp.size() - 1).bitmap = image;
+                                    }
                                     JSONArray comment_list = post.getJSONArray("Comment");
                                     for (int j = 0; j < comment_list.length(); j++){
                                         JSONObject comm = comment_list.getJSONObject(j);
@@ -92,6 +103,7 @@ public class HomeFragment extends Fragment {
                             }
                         }
                         catch (JSONException jsonex){
+                            jsonex.printStackTrace();
                             Log.e("Error in Json Parsing", "Shit");
                         }
                         Log.e("done with response", "yaaay");
