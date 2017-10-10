@@ -1,5 +1,7 @@
 package com.example.purav.androidfacebook;
 
+import android.graphics.Bitmap;
+
 import java.util.ArrayList;
 
 /**
@@ -11,6 +13,7 @@ public class PostStructure {
     public String content;
     public String postid;
     public String name;
+    public Bitmap bitmap;
     public boolean see_all_comments;
     public ArrayList<CommentStructure> comments;
     public PostStructure(String name, String content){
@@ -18,5 +21,6 @@ public class PostStructure {
         this.content = content;
         comments = new ArrayList<CommentStructure>();
         see_all_comments = false;
+        bitmap = null;
     }
 }
