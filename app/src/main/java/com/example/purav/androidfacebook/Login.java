@@ -26,7 +26,10 @@ import java.util.Map;
 public class Login extends AppCompatActivity {
 
 
-    public static final String urlx = "http://10.42.0.1:8080/SocialNetwork3";
+
+    public static final String urlx = "http://192.168.0.110:8080/androidmessenger";
+    public static String postuids = "";
+    public static int postoffsets = 0;
 
 
     @Override

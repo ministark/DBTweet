@@ -22,12 +22,12 @@
         <activity android:name=".Home" />
         <activity
             android:name=".HomePage"
-            android:label="@string/title_activity_home_page"
-            android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation"
             android:hardwareAccelerated="false"
-            android:windowSoftInputMode="adjustPan"
-            ></activity>
+            android:label="@string/title_activity_home_page"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".SeeMyPosts"></activity>
     </application>
 
 </manifest>

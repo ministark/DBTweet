@@ -67,7 +67,7 @@ public class PostFragment extends Fragment {
         post_add.setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 //Do stuff here
-                EditText editusername = (EditText) view.findViewById(R.id.post_content) ;
+                final EditText editusername = view.findViewById(R.id.post_content);
                 final String content = editusername.getText().toString();
                 if (content == null){
                     Toast.makeText(getActivity().getApplicationContext(), "Empty Text", Toast.LENGTH_LONG).show();
@@ -86,8 +86,10 @@ public class PostFragment extends Fragment {
                                     if(successlogin.equals(true)){
                                         String userid = jobj.getString("data");
                                         Toast.makeText(getActivity(), "Post Added", Toast.LENGTH_LONG).show();
+                                        editusername.setText("");
                                     }
                                     else{
+                                        Toast.makeText(getActivity(), "Could't add Post", Toast.LENGTH_LONG).show();
                                     }
                                 }
                                 catch (JSONException jsonex){
