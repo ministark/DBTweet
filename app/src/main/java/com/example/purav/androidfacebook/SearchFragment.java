@@ -4,8 +4,7 @@ package com.example.purav.androidfacebook;
  * Created by sourabh on 7/10/17.
  */
 
-import com.example.purav.androidfacebook.HomePage;
-
+import com.example.purav.androidfacebook.Login;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
@@ -134,6 +133,18 @@ public class SearchFragment extends Fragment {
             }
         });
 
+        final Button unfollowuidbutton = (Button) view.findViewById(R.id.unfollow_button);
+
+        unfollowuidbutton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                String text_in_box = textView.getText().toString();
+                InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                unfollowuid(text_in_box);
+            }
+        });
+
 
         // COde for see user
         final Button showpostsbutton = (Button) view.findViewById(R.id.showposts_button);
@@ -147,6 +158,7 @@ public class SearchFragment extends Fragment {
 
             }
         });
+
         return view;
     }
 
@@ -296,6 +308,55 @@ public class SearchFragment extends Fragment {
 
     }
 
+    public void unfollowuid(String uidx){
+
+        final String uid = uidx.split(",")[0];
+
+        String url = urlx + "/Unfollow";
+        StringRequest str = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("UnFollow", "The response is " + response);
+                        try{
+                            JSONObject jobj = new JSONObject(response);
+                            Boolean successlogin = jobj.getBoolean("status");
+                            if(successlogin.equals(true)){
+                                Toast.makeText(getActivity(), jobj.getString("data"), Toast.LENGTH_SHORT).show();
+                            }
+                            else{
+                                Toast.makeText(getActivity(), jobj.getString("message"), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        catch (JSONException jsonex){
+                            Log.e("Error in Json Parsing", "Shit");
+                        }
+                        Log.e("done with response", "yaaay");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("Error In HTTP Response", "Shit");
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("uid", uid);
+                Log.e("params", "put and request sent");
+                return params;
+            }
+        };
+
+        RequestQueue queue = Volley.newRequestQueue(getActivity());
+        queue.add(str);
+        Log.e("Volley", "UnFollow request sent");
+
+    }
+
+
     public void showposts(String uid1, final View view){
         // Creating the adapter
         final String uid = uid1.split(",")[0];
@@ -329,8 +390,6 @@ public class SearchFragment extends Fragment {
 
                                 }
                                 adapter.notifyDataSetChanged();
-//                                ListView  lv = (ListView) view.findViewById(R.id.listview_user);
-//                                lv.setVisibility(View.VISIBLE);
                                 Log.e("AutoComplete", "Added new suggestions..! yaaay");
                             }
                             else{

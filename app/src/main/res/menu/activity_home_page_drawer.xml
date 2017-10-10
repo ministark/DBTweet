@@ -21,7 +21,7 @@
             <item
                 android:id="@+id/nav_unfollow"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Unfollow" />
+                android:title="SeeMyPosts" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_menu_send"

@@ -97,6 +97,8 @@ public class HomePage extends AppCompatActivity
             ft.replace(R.id.home_container,  new SearchFragment());
             ft.commit();
         } else if (id == R.id.nav_unfollow) {
+            ft.replace(R.id.home_container,  new SeeMyPostsFragment());
+            ft.commit();
 
         } else if (id == R.id.nav_logout) {
 

@@ -27,7 +27,8 @@ public class Login extends AppCompatActivity {
 
 
     public static final String urlx = "http://192.168.0.110:8080/androidmessenger";
-
+    public static String postuids = "";
+    public static int postoffsets = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
