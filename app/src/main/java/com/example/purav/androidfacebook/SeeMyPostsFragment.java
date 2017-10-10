@@ -1,7 +1,5 @@
 package com.example.purav.androidfacebook;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
@@ -32,6 +30,8 @@ import static com.example.purav.androidfacebook.Login.urlx;
 
 public class SeeMyPostsFragment extends Fragment {
 
+    static Integer the_limit = 2;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -58,7 +58,6 @@ public class SeeMyPostsFragment extends Fragment {
 
         final ArrayList<PostStructure> temp = new ArrayList<>();
         final AdapterPost adapter = new AdapterPost(view, getActivity(), temp);
-
         if(listview_home.getAdapter() != null) {
             Integer count = listview_home.getAdapter().getCount();
             Log.e("Maybe Error", "Starting");
@@ -66,9 +65,8 @@ public class SeeMyPostsFragment extends Fragment {
                 temp.add((PostStructure) listview_home.getAdapter().getItem(i));
             }
         }
-        Log.e("Maybe Error", "Done yaaay");
-
         listview_home.setAdapter(adapter);
+        Log.e("Maybe Error", "Done yaaay");
 
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         String url = urlx + "/SeeMyPosts";
@@ -76,6 +74,7 @@ public class SeeMyPostsFragment extends Fragment {
 
         StringRequest str = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
+
                     @Override
 
                     public void onResponse(String response) {
@@ -87,7 +86,6 @@ public class SeeMyPostsFragment extends Fragment {
                             if(successlogin.equals(true)){
                                 JSONArray post_list = jobj.getJSONArray("data");
                                 for (int i = 0; i < post_list.length(); i++) {
-                                    Login.postoffsets += 1;
                                     JSONObject post = post_list.getJSONObject(i);
                                     temp.add(new PostStructure(post.getString("uid"),post.getString("text")) );
                                     temp.get(temp.size()-1).postid = post.getString("postid");
@@ -97,8 +95,12 @@ public class SeeMyPostsFragment extends Fragment {
                                         temp.get(temp.size()-1).comments.add(new CommentStructure(comm.getString("name"), comm.getString("text")) );
                                     }
                                 }
+                                if(post_list.length() < the_limit){
+                                    Toast.makeText(getActivity(), "Showing all Posts Possible", Toast.LENGTH_SHORT).show();
+                                }
                                 adapter.notifyDataSetChanged();
-                                Log.e("AutoComplete", "Added new suggestions..! yaaay");
+                                listview_home.setSelection(temp.size() - post_list.length());
+                                Log.e("SeeMyPosts", "Added new suggestions..! yaaay");
                             }
                             else{
                                 Toast.makeText(getActivity(), "Couldn't Do It :(", Toast.LENGTH_LONG).show();
@@ -124,7 +126,6 @@ public class SeeMyPostsFragment extends Fragment {
                 Integer the_offset = 0;
                 if(listview_home.getAdapter() != null);
                     the_offset = listview_home.getAdapter().getCount();
-                Integer the_limit = 1;
                 params.put("offset", the_offset.toString());
                 params.put("limit", the_limit.toString());
                 return params;
@@ -133,5 +134,4 @@ public class SeeMyPostsFragment extends Fragment {
 
         queue.add(str);
     }
-
 }
